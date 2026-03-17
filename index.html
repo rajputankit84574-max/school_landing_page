@@ -365,18 +365,24 @@ details summary::-webkit-details-marker{display:none;}
         </div>
 
         <!-- Form fields (shown by default) -->
-        <form id="admission-form-el" onsubmit="submitEmail(); return false;" novalidate>
+        <!-- <form id="admission-form-el" onsubmit="submitEmail(); return false;" novalidate>
+        <div id="form-fields" class="space-y-4"> -->
+          <form id="admission-form-el" onsubmit="submitEmail(event); return false;" novalidate>
+          <input type="hidden" name="access_key" value="a94a1150-d016-49e6-a31d-c8f27095c9d2">
+          <input type="hidden" name="subject" value="New Admission Enquiry – NIMT School 2026">
+          <input type="hidden" name="from_name" value="NIMT School Admission Form">
         <div id="form-fields" class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1" for="f-parent">Parent / Guardian Name <span class="text-red-500">*</span></label>
-            <input id="f-parent" type="text" placeholder="e.g. Rajesh Kumar" autocomplete="name" required
+            <input id="f-parent" name="parent_name" type="text" placeholder="e.g. Rajesh Kumar" autocomplete="name" required
                    maxlength="60" aria-required="true" aria-describedby="f-parent-err"
                    class="admission-input w-full border border-gray-300 rounded-lg p-3 text-gray-800 placeholder-gray-400">
           
             <span id="f-parent-err" class="hidden text-red-500 text-xs mt-1 block"></span></div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1" for="f-student">Student Name <span class="text-red-500">*</span></label>
-            <input id="f-student" type="text" placeholder="e.g. Priya Kumar" required
+            <!-- <input id="f-student" type="text" placeholder="e.g. Priya Kumar" required -->
+             <input id="f-student" name="student_name" type="text" placeholder="e.g. Priya Kumar" required
                    maxlength="60" aria-required="true" aria-describedby="f-student-err"
                    class="admission-input w-full border border-gray-300 rounded-lg p-3 text-gray-800 placeholder-gray-400">
           
@@ -385,7 +391,8 @@ details summary::-webkit-details-marker{display:none;}
             <label class="block text-sm font-medium text-gray-700 mb-1" for="f-phone">Phone Number <span class="text-red-500">*</span></label>
             <div class="flex gap-2">
               <span class="inline-flex items-center px-3 border border-gray-300 bg-gray-50 rounded-lg text-gray-600 text-sm font-medium">+91</span>
-              <input id="f-phone" type="tel" placeholder="98765 43210" autocomplete="tel"
+              <!-- <input id="f-phone" type="tel" placeholder="98765 43210" autocomplete="tel" -->
+               <input id="f-phone" name="phone" type="tel" placeholder="98765 43210" autocomplete="tel"
                      pattern="[6-9]{1}[0-9]{9}" maxlength="10" inputmode="numeric" required
                      aria-required="true" aria-describedby="f-phone-err"
                      class="admission-input flex-1 border border-gray-300 rounded-lg p-3 text-gray-800 placeholder-gray-400">
@@ -394,14 +401,16 @@ details summary::-webkit-details-marker{display:none;}
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1" for="f-email">Email Address</label>
-            <input id="f-email" type="email" placeholder="parent@email.com" autocomplete="email"
+            <!-- <input id="f-email" type="email" placeholder="parent@email.com" autocomplete="email" -->
+             <input id="f-email" name="email" type="email" placeholder="parent@email.com" autocomplete="email"
                    aria-describedby="f-email-err"
                    class="admission-input w-full border border-gray-300 rounded-lg p-3 text-gray-800 placeholder-gray-400">
           
             <span id="f-email-err" class="hidden text-red-500 text-xs mt-1 block"></span></div>
           <div>
             <label id="f-class-label" class="block text-sm font-medium text-gray-700 mb-1" for="f-class">Class Applying For <span class="text-red-500" aria-hidden="true">*</span></label>
-            <select id="f-class" required aria-required="true" aria-describedby="f-class-err"
+            <!-- <select id="f-class" required aria-required="true" aria-describedby="f-class-err" -->
+            <select id="f-class" name="class_applying" required aria-required="true" aria-describedby="f-class-err"
                    class="admission-input w-full border border-gray-300 rounded-lg p-3 text-gray-800 bg-white cursor-pointer">
               <option value="" disabled selected>— Select Class —</option>
               <optgroup label="Early Years"><option>Nursery</option><option>LKG (Junior KG)</option><option>UKG (Senior KG)</option></optgroup>
@@ -417,7 +426,8 @@ details summary::-webkit-details-marker{display:none;}
             <span id="f-class-err" class="hidden text-red-500 text-xs mt-1 block"></span></div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1" for="f-msg">Message (optional)</label>
-            <textarea id="f-msg" rows="3" placeholder="Any queries about boarding, fees, scholarships..."
+            <!-- <textarea id="f-msg" rows="3" placeholder="Any queries about boarding, fees, scholarships..." -->
+            <textarea id="f-msg" name="message" rows="3" placeholder="Any queries about boarding, fees, scholarships..."
                       maxlength="500" oninput="document.getElementById('f-msg-count').textContent=500-this.value.length"
                       class="admission-input w-full border border-gray-300 rounded-lg p-3 text-gray-800 placeholder-gray-400 resize-none"></textarea>
           <p class="text-right text-xs text-gray-400 mt-1"><span id="f-msg-count">500</span> chars remaining</p>
@@ -879,46 +889,77 @@ document.addEventListener('keydown', e => {
 });
 
 // ─── Email submit ─────────────────────────────────────────────────────────────
-async function submitEmail(){
+// async function submitEmail(){
+//   const d = getFormData(); if(!d) return;
+
+//   setBtnLoading('email-btn', 'Submitting…');
+
+//   emailjs.init(EJS_KEY);
+//   try {
+//     await emailjs.send(EJS_SERVICE, EJS_TEMPLATE, {
+//       parent_name:    d.p,
+//       student_name:   d.s,
+//       phone:          '+91 ' + d.ph,
+//       email:          d.em  || 'Not provided',
+//       class_applying: d.cl,
+//       message:        d.ms  || 'No message.'
+//     });
+//     onSuccess(d);
+//   } catch(e){
+//     console.warn('EmailJS error:', e);
+//     // Graceful fallback — still show success and open WhatsApp
+//     onSuccess(d, true);
+//   } finally {
+//     // Always re-enable button (even if onSuccess hides it, safety net)
+//     resetBtn('email-btn', EMAIL_BTN_LABEL);
+//   }
+// }
+
+
+// ─── Web3Forms submit ─────────────────────────────────────────────────────────
+// ─── Web3Forms submit ─────────────────────────────────────────────────────────
+async function submitEmail(event){
+  if(event) event.preventDefault();
   const d = getFormData(); if(!d) return;
 
   setBtnLoading('email-btn', 'Submitting…');
 
-  emailjs.init(EJS_KEY);
+  const formEl = document.getElementById('admission-form-el');
+  const formData = new FormData(formEl);
+  formData.set('phone', '+91 ' + d.ph);
+
   try {
-    await emailjs.send(EJS_SERVICE, EJS_TEMPLATE, {
-      parent_name:    d.p,
-      student_name:   d.s,
-      phone:          '+91 ' + d.ph,
-      email:          d.em  || 'Not provided',
-      class_applying: d.cl,
-      message:        d.ms  || 'No message.'
+    const response = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      body: formData
     });
-    onSuccess(d);
+    const result = await response.json();
+    if (response.ok && result.success) {
+      onSuccess(d);
+    } else {
+      toast('⚠ Submission failed. Please try WhatsApp or call us directly.');
+      resetBtn('email-btn', EMAIL_BTN_LABEL);
+    }
   } catch(e){
-    console.warn('EmailJS error:', e);
-    // Graceful fallback — still show success and open WhatsApp
-    onSuccess(d, true);
-  } finally {
-    // Always re-enable button (even if onSuccess hides it, safety net)
+    toast('⚠ Network error. Please try WhatsApp or call us directly.');
     resetBtn('email-btn', EMAIL_BTN_LABEL);
   }
 }
 
-function onSuccess(d, fallback=false){
-  document.getElementById('form-fields').classList.add('hidden');
-  document.getElementById('form-success').classList.remove('hidden');
-  showTyModal();
-  srAnnounce('Application submitted successfully. Our team will contact you within 24 hours.');
-  const msg = 'Hello NIMT School Ghaziabad, I submitted an admission form.'
-    + '%0A%0A*Parent:* '  + encodeURIComponent(d.p)
-    + '%0A*Student:* '    + encodeURIComponent(d.s)
-    + '%0A*Phone:* +91 '  + d.ph
-    + '%0A*Class:* '      + encodeURIComponent(d.cl);
-  setTimeout(() => window.open('https://wa.me/' + WA_NUM + '?text=' + msg, '_blank'), 1800);
-}
+// function onSuccess(d, fallback=false){
+//   document.getElementById('form-fields').classList.add('hidden');
+//   document.getElementById('form-success').classList.remove('hidden');
+//   showTyModal();
+//   srAnnounce('Application submitted successfully. Our team will contact you within 24 hours.');
+//   const msg = 'Hello NIMT School Ghaziabad, I submitted an admission form.'
+//     + '%0A%0A*Parent:* '  + encodeURIComponent(d.p)
+//     + '%0A*Student:* '    + encodeURIComponent(d.s)
+//     + '%0A*Phone:* +91 '  + d.ph
+//     + '%0A*Class:* '      + encodeURIComponent(d.cl);
+//   setTimeout(() => window.open('https://wa.me/' + WA_NUM + '?text=' + msg, '_blank'), 1800);
+// }
 
-// ─── WhatsApp direct submit ───────────────────────────────────────────────────
+// // ─── WhatsApp direct submit ───────────────────────────────────────────────────
 function submitWhatsApp(){
   const d = getFormData(); if(!d) return;
 
@@ -937,6 +978,13 @@ function submitWhatsApp(){
   resetForm();
 
   setTimeout(() => resetBtn('wa-btn', WA_BTN_LABEL), 2500);
+}
+
+function onSuccess(d){
+  document.getElementById('admission-form-el').style.display = 'none';
+  document.getElementById('form-success').classList.remove('hidden');
+  showTyModal();
+  srAnnounce('Application submitted successfully. Our team will contact you within 24 hours.');
 }
 
 // ─── Mobile nav toggle ────────────────────────────────────────────────────────
